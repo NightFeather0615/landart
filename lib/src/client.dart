@@ -127,7 +127,7 @@ class Landart {
 
     return eventStream
       .where((e) => e.opCode == 0)
-      .skip(1)
+      .skipWhile((e) => e.type == "INIT_STATE")
       .map((e) => LanyardUser.fromJson(e.data));
   }
 }
