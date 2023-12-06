@@ -166,14 +166,16 @@ class ActivityData {
 }
 
 class ActivityPartyData {
-  final String id;
+  final String? id;
   final List<int>? size;
 
   ActivityPartyData({required this.id, required this.size});
 
   static ActivityPartyData? fromJson(dynamic data) {
     if (data == null) return null;
+
     List<int>? size = data["size"] == null ? null : (data["size"] as List<dynamic>).map((e) => e as int).toList();
+
     return ActivityPartyData(
       id: data["id"],
       size: size
@@ -218,7 +220,7 @@ class ActivityEmojiData {
 class DiscordUserData {
   final String id;
   final String username;
-  final String avatar;
+  final String? avatar;
   final String discriminator;
   final bool bot;
   final String? globalName;
@@ -303,7 +305,7 @@ class AvatarDecorationData {
 }
 
 class SpotifyData {
-  final String trackId;
+  final String? trackId;
   final Timestamp? timestamps;
   final String album;
   final String albumArtUrl;
