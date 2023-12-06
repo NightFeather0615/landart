@@ -24,7 +24,11 @@ void main() async {
 
     bool hasError = false;
 
-    event.listen((_) => {}, onError: (e) => hasError = true);
+    event.listen(
+      (_) => {},
+      onError: (e) => hasError = true,
+      cancelOnError: true
+    );
 
     await Future.delayed(const Duration(seconds: 10));
 
@@ -38,7 +42,11 @@ void main() async {
 
     bool hasError = false;
 
-    event.listen((_) => {}, onError: (e) => hasError = true);
+    event.listen(
+      (_) => {},
+      onError: (e) => hasError = true,
+      cancelOnError: true
+    );
 
     await Future.delayed(const Duration(seconds: 10));
 
@@ -50,7 +58,11 @@ void main() async {
 
     bool hasError = false;
 
-    event.listen((_) => {}, onError: (e) => hasError = true);
+    event.listen(
+      (_) => {},
+      onError: (e) => hasError = true,
+      cancelOnError: true
+    );
 
     await Future.delayed(const Duration(seconds: 10));
 
