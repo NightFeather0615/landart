@@ -26,7 +26,7 @@ void main() async {
 
     event.listen(
       (_) => {},
-      onError: (e) => hasError = true,
+      onError: (_) => hasError = true,
       cancelOnError: true
     );
 
@@ -44,7 +44,7 @@ void main() async {
 
     event.listen(
       (_) => {},
-      onError: (e) => hasError = true,
+      onError: (_) => hasError = true,
       cancelOnError: true
     );
 
@@ -60,7 +60,7 @@ void main() async {
 
     event.listen(
       (_) => {},
-      onError: (e) => hasError = true,
+      onError: (_) => hasError = true,
       cancelOnError: true
     );
 
