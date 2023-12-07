@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class ParseUtils {
+abstract class ParseUtils {
   static const JsonEncoder jsonEncoder = JsonEncoder.withIndent("  ");
   
   static Map<String, String>? parseStringMap(Map<String, dynamic>? data) {

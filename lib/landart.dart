@@ -1,4 +1,5 @@
 library landart;
 
-export 'src/client.dart';
+export 'src/lanyard.dart';
+export 'src/kv.dart';
 export 'src/type.dart';

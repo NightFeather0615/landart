@@ -2,8 +2,13 @@ import 'dart:convert';
 
 import 'package:landart/src/utils.dart';
 
-class LanyardUser {
-  final Map<String, String>? keyValue;
+
+abstract interface class ToObject {
+  Object toObject();
+}
+
+class LanyardUser implements ToObject {
+  final Map<String, String> keyValue;
   final SpotifyData? spotify;
   final DiscordUserData discordUser;
   final List<ActivityData> activities;
@@ -23,7 +28,7 @@ class LanyardUser {
 
   static LanyardUser fromJson(dynamic data) {
     return LanyardUser(
-      keyValue: ParseUtils.parseStringMap(data["kv"]),
+      keyValue: ParseUtils.parseStringMap(data["kv"]) ?? {},
       spotify: SpotifyData.fromJson(data["spotify"]),
       discordUser: DiscordUserData.fromJson(data["discord_user"]),
       activities: (data["activities"] as List<dynamic>).map(ActivityData.fromJson).toList(),
@@ -37,6 +42,7 @@ class LanyardUser {
     );
   }
 
+  @override
   Object toObject() {
     return {
       "keyValue": keyValue,
@@ -55,7 +61,7 @@ class LanyardUser {
   }
 }
 
-class ActiveOnDiscord {
+class ActiveOnDiscord implements ToObject {
   final bool web;
   final bool desktop;
   final bool mobile;
@@ -66,6 +72,7 @@ class ActiveOnDiscord {
     required this.mobile
   });
 
+  @override
   Object toObject() {
     return {
       "web": web,
@@ -80,7 +87,7 @@ class ActiveOnDiscord {
   }
 }
 
-class ActivityData {
+class ActivityData implements ToObject {
   final String id;
   final String name;
   final int type;
@@ -140,6 +147,7 @@ class ActivityData {
     );
   }
 
+  @override
   Object toObject({int indentDepth = 0}) {
     return {
       "name": name,
@@ -165,7 +173,7 @@ class ActivityData {
   }
 }
 
-class ActivityPartyData {
+class ActivityPartyData implements ToObject {
   final String? id;
   final List<int>? size;
 
@@ -182,6 +190,7 @@ class ActivityPartyData {
     );
   }
 
+  @override
   Object toObject() {
     return {
       "id": id,
@@ -195,7 +204,7 @@ class ActivityPartyData {
   }
 }
 
-class ActivityEmojiData {
+class ActivityEmojiData implements ToObject {
   final String name;
 
   ActivityEmojiData({required this.name});
@@ -205,6 +214,7 @@ class ActivityEmojiData {
     return ActivityEmojiData(name: data["name"]);
   }
 
+  @override
   Object toObject() {
     return {
       "name": name
@@ -217,7 +227,7 @@ class ActivityEmojiData {
   }
 }
 
-class DiscordUserData {
+class DiscordUserData implements ToObject {
   final String id;
   final String username;
   final String? avatar;
@@ -254,6 +264,7 @@ class DiscordUserData {
     );
   }
 
+  @override
   Object toObject() {
     return {
       "id": id,
@@ -274,7 +285,7 @@ class DiscordUserData {
   }
 }
 
-class AvatarDecorationData {
+class AvatarDecorationData implements ToObject {
   final String asset;
   final int skuId;
 
@@ -291,6 +302,7 @@ class AvatarDecorationData {
     );
   }
 
+  @override
   Object toObject() {
     return {
       "asset": asset,
@@ -304,7 +316,7 @@ class AvatarDecorationData {
   }
 }
 
-class SpotifyData {
+class SpotifyData implements ToObject {
   final String? trackId;
   final Timestamp? timestamps;
   final String album;
@@ -333,6 +345,7 @@ class SpotifyData {
     );
   }
 
+  @override
   Object toObject() {
     return {
       "trackId": trackId,
@@ -350,7 +363,7 @@ class SpotifyData {
   }
 }
 
-class Timestamp {
+class Timestamp implements ToObject {
   final int? start;
   final int? end;
 
@@ -367,6 +380,7 @@ class Timestamp {
     );
   }
 
+  @override
   Object toObject() {
     return {
       "start": start,
@@ -385,7 +399,11 @@ class LanyardSocketEvent {
   final dynamic data;
   final String? type;
 
-  LanyardSocketEvent({required this.opCode, this.data, this.type});
+  LanyardSocketEvent({
+    required this.opCode,
+    this.data,
+    this.type
+  });
 
   static LanyardSocketEvent fromJson(dynamic json) {
     return LanyardSocketEvent(
