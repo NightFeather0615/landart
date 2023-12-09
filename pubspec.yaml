@@ -1,6 +1,6 @@
 name: landart
 description: A featureful API wrapper for Lanyard & Lanyard KV written in Dart.
-version: 1.2.0
+version: 1.1.0
 homepage: https://github.com/NightFeather0615/landart
 repository: https://github.com/NightFeather0615/landart
 issue_tracker: https://github.com/NightFeather0615/landart/issues
