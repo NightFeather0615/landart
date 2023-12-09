@@ -1,14 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
+
+import 'package:http/http.dart';
 
 import 'package:landart/landart.dart';
 import 'package:landart/src/config.dart';
-import 'package:landart/src/extension.dart';
 
 
 /// Base class for interacting with the LanyardKV API.
 class LanyardKV {
-  static final HttpClient _httpClient = HttpClient();
+  static final Client _httpClient = Client();
   
   late final String _userId;
   String? _token;
@@ -29,20 +29,21 @@ class LanyardKV {
   /// Setting a key->value pair.
   Future<void> set(String key, String value) async {
     Uri uri = Uri.parse("https://${Config.apiPath}/${Config.apiVersion}/users/$_userId/kv/$key");
-
-    HttpClientRequest req = await _httpClient.putUrl(uri);
-    req.headers.contentType = ContentType.text;
-    req.headers.add("Authorization", _token ?? "");
-    req.headers.contentLength = utf8.encode(value).length;
-    req.write(value);
-
-    HttpClientResponse res = await req.close();
+    
+    Response res = await _httpClient.put(
+      uri,
+      headers: {
+        "Content-Type": "text/plain",
+        "Authorization": _token ?? ""
+      },
+      body: value
+    );
 
     if (res.statusCode == 204) {
       return;
     }
     
-    dynamic jsonBody = jsonDecode(await res.body());
+    dynamic jsonBody = jsonDecode(res.body);
 
     switch (res.statusCode) {
       default: {
@@ -55,21 +56,20 @@ class LanyardKV {
   Future<void> setAll(Map<String, String> data) async {
     Uri uri = Uri.parse("https://${Config.apiPath}/${Config.apiVersion}/users/$_userId/kv");
 
-    String jsonString = jsonEncode(data);
-
-    HttpClientRequest req = await _httpClient.patchUrl(uri);
-    req.headers.contentType = ContentType.json;
-    req.headers.add("Authorization", _token ?? "");
-    req.headers.contentLength = utf8.encode(jsonString).length;
-    req.write(jsonString);
-
-    HttpClientResponse res = await req.close();
+    Response res = await _httpClient.patch(
+      uri,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": _token ?? ""
+      },
+      body: jsonEncode(data)
+    );
 
     if (res.statusCode == 204) {
       return;
     }
     
-    dynamic jsonBody = jsonDecode(await res.body());
+    dynamic jsonBody = jsonDecode(res.body);
 
     switch (res.statusCode) {
       default: {
@@ -94,16 +94,17 @@ class LanyardKV {
   Future<void> delete(String key) async {
     Uri uri = Uri.parse("https://${Config.apiPath}/${Config.apiVersion}/users/$_userId/kv/$key");
 
-    HttpClientRequest req = await _httpClient.deleteUrl(uri);
-    req.headers.add("Authorization", _token ?? "");
-
-    HttpClientResponse res = await req.close();
-
+    Response res = await _httpClient.delete(
+      uri,
+      headers: {
+        "Authorization": _token ?? ""
+      }
+    );
     if (res.statusCode == 204) {
       return;
     }
     
-    dynamic jsonBody = jsonDecode(await res.body());
+    dynamic jsonBody = jsonDecode(res.body);
 
     switch (res.statusCode) {
       default: {

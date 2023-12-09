@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+
+import 'package:archive/archive.dart';
+import 'package:http/http.dart';
 
 import 'package:landart/src/config.dart';
-import 'package:landart/src/extension.dart';
 import 'package:landart/src/type.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 
 /// Base class for interacting with the Lanyard API.
 abstract class Lanyard {
-  static final HttpClient _httpClient = HttpClient();
+  static final Client _httpClient = Client();
 
   static final ZLibDecoder _zlibDecoder = ZLibDecoder();
   static const Utf8Decoder _utf8Decoder = Utf8Decoder();
@@ -17,9 +19,9 @@ abstract class Lanyard {
   /// Fetch user by Discord ID.
   static Future<LanyardUser> fetchUser(String userId) async {
     Uri uri = Uri.parse("https://${Config.apiPath}/${Config.apiVersion}/users/$userId");
-    HttpClientResponse res = await (await _httpClient.getUrl(uri)).close();
+    Response res = await _httpClient.get(uri);
 
-    dynamic jsonBody = jsonDecode(await res.body());
+    dynamic jsonBody = jsonDecode(res.body);
 
     switch (res.statusCode) {
       case 200: {
@@ -47,12 +49,13 @@ abstract class Lanyard {
   }
 
   /// Handles basic socket functions like decompression, decoding and heartbeats.
-  static Future<(WebSocket, Stream<LanyardSocketEvent>)> _handleSocket() async {
-    WebSocket socketClient = await WebSocket.connect("wss://${Config.apiPath}/socket?compression=zlib_json");
-    Stream<dynamic> socketStream = socketClient.asBroadcastStream();
+  static Future<(WebSocketChannel, Stream<LanyardSocketEvent>)> _handleSocket() async {
+    Uri uri = Uri.parse("wss://${Config.apiPath}/socket?compression=zlib_json");
+    WebSocketChannel socketClient = WebSocketChannel.connect(uri);
+    Stream<dynamic> socketStream = socketClient.stream.asBroadcastStream();
 
     Stream<LanyardSocketEvent> eventStream = socketStream
-      .map((r) => _utf8Decoder.convert(_zlibDecoder.convert(r))) // Decompress zlib data
+      .map((r) => _utf8Decoder.convert(_zlibDecoder.decodeBytes(r))) // Decompress zlib data
       .map((s) => jsonDecode(s)) // Decode to JSON
       .map(LanyardSocketEvent.fromJson); // Parse JSON data into `LanyardSocketEvent`
 
@@ -70,7 +73,7 @@ abstract class Lanyard {
         }
         
         // Send heartbeat event
-        socketClient.add(
+        socketClient.sink.add(
           LanyardSocketEvent(
             opCode: 3
           ).toJson()
@@ -85,7 +88,7 @@ abstract class Lanyard {
   static Future<Stream<LanyardUser>> subscribe(String userId) async {
     var (socketClient, eventStream) = await _handleSocket();
 
-    socketClient.add(
+    socketClient.sink.add(
       LanyardSocketEvent(
         opCode: 2,
         data: {
@@ -103,7 +106,7 @@ abstract class Lanyard {
   static Future<Stream<Map<String, LanyardUser>>> subscribeMultiple(List<String> userIdList) async {
     var (socketClient, eventStream) = await _handleSocket();
 
-    socketClient.add(
+    socketClient.sink.add(
       LanyardSocketEvent(
         opCode: 2,
         data: {
@@ -122,7 +125,7 @@ abstract class Lanyard {
   static Future<Stream<LanyardUser>> subscribeAll() async {
     var (socketClient, eventStream) = await _handleSocket();
 
-    socketClient.add(
+    socketClient.sink.add(
       LanyardSocketEvent(
         opCode: 2,
         data: {

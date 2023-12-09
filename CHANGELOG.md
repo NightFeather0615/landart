@@ -9,3 +9,7 @@
 ## 1.0.2
 
 - Add docs
+
+## 1.2.0
+
+- Removed `dart:io` and replaced it with web compatible packages
