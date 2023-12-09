@@ -4,6 +4,7 @@ import 'package:landart/src/utils.dart';
 
 
 abstract interface class ToObject {
+  /// Convert class to [Object].
   Object toObject();
 }
 
@@ -26,6 +27,7 @@ class LanyardUser implements ToObject {
     required this.listeningToSpotify
   });
 
+  /// Parse JSON data into [LanyardUser].
   static LanyardUser fromJson(dynamic data) {
     return LanyardUser(
       keyValue: ParseUtils.parseStringMap(data["kv"]) ?? {},
@@ -122,11 +124,13 @@ class ActivityData implements ToObject {
     required this.buttons
   });
 
+  /// Parse the `buttons` field in JSON data.
   static List<String>? _parseButtons(dynamic data) {
     if (data == null) return null;
     return (data as List<dynamic>).map((e) => e.toString()).toList();
   }
 
+  /// Parse JSON data into [ActivityData].
   static ActivityData fromJson(dynamic data) {
     return ActivityData(
       id: data["id"],
@@ -179,6 +183,7 @@ class ActivityPartyData implements ToObject {
 
   ActivityPartyData({required this.id, required this.size});
 
+  /// Parse JSON data into [ActivityPartyData].
   static ActivityPartyData? fromJson(dynamic data) {
     if (data == null) return null;
 
@@ -209,6 +214,7 @@ class ActivityEmojiData implements ToObject {
 
   ActivityEmojiData({required this.name});
 
+  /// Parse JSON data into [ActivityEmojiData].
   static ActivityEmojiData? fromJson(dynamic data) {
     if (data == null) return null;
     return ActivityEmojiData(name: data["name"]);
@@ -250,6 +256,7 @@ class DiscordUserData implements ToObject {
     required this.publicFlags
   });
 
+  /// Parse JSON data into [DiscordUserData].
   static DiscordUserData fromJson(dynamic data) {
     return DiscordUserData(
       id: data["id"],
@@ -294,6 +301,7 @@ class AvatarDecorationData implements ToObject {
     required this.skuId
   });
 
+  /// Parse JSON data into [AvatarDecorationData].
   static AvatarDecorationData? fromJson(dynamic data) {
     if (data == null) return null;
     return AvatarDecorationData(
@@ -333,6 +341,7 @@ class SpotifyData implements ToObject {
     required this.song
   });
 
+  /// Parse JSON data into [SpotifyData].
   static SpotifyData? fromJson(dynamic data) {
     if (data == null) return null;
     return SpotifyData(
@@ -372,6 +381,7 @@ class Timestamp implements ToObject {
     required this.end
   });
 
+  /// Parse JSON data into [Timestamp].
   static Timestamp? fromJson(dynamic data) {
     if (data == null) return null;
     return Timestamp(
@@ -405,6 +415,7 @@ class LanyardSocketEvent {
     this.type
   });
 
+  /// Parse JSON data into [LanyardSocketEvent].
   static LanyardSocketEvent fromJson(dynamic json) {
     return LanyardSocketEvent(
       opCode: json["op"],
@@ -413,6 +424,7 @@ class LanyardSocketEvent {
     );
   }
 
+  /// Convert [LanyardSocketEvent] to JSON data.
   String toJson() {
     return jsonEncode(
       {
