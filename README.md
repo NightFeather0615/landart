@@ -1,7 +1,7 @@
 [![pub](https://img.shields.io/pub/v/landart.svg)](https://pub.dev/packages/landart)
 [![documentation](https://img.shields.io/badge/Documentation-landart-blue.svg)](https://pub.dev/documentation/landart/latest/)
 
-An API wrapper for [Lanyard](https://github.com/Phineas/lanyard) written in Dart. 
+A featureful API wrapper for [Lanyard](https://github.com/Phineas/lanyard) & [Lanyard KV](https://github.com/Phineas/lanyard#kv) written in Dart.
 
 ## Features
 
