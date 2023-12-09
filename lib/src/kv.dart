@@ -100,6 +100,7 @@ class LanyardKV {
         "Authorization": _token ?? ""
       }
     );
+    
     if (res.statusCode == 204) {
       return;
     }
