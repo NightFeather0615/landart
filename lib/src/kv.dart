@@ -45,9 +45,6 @@ class LanyardKV {
     dynamic jsonBody = jsonDecode(await res.body());
 
     switch (res.statusCode) {
-      case 401: {
-        throw Exception(jsonBody["error"]["message"]);
-      }
       default: {
         throw Exception(jsonBody["error"]["message"] ?? "Unknown Error");
       }
@@ -75,9 +72,6 @@ class LanyardKV {
     dynamic jsonBody = jsonDecode(await res.body());
 
     switch (res.statusCode) {
-      case 401: {
-        throw Exception(jsonBody["error"]["message"]);
-      }
       default: {
         throw Exception(jsonBody["error"]["message"] ?? "Unknown Error");
       }
@@ -112,9 +106,6 @@ class LanyardKV {
     dynamic jsonBody = jsonDecode(await res.body());
 
     switch (res.statusCode) {
-      case 401: {
-        throw Exception(jsonBody["error"]["message"]);
-      }
       default: {
         throw Exception(jsonBody["error"]["message"] ?? "Unknown Error");
       }

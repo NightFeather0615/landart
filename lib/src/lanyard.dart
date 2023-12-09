@@ -29,9 +29,6 @@ abstract class Lanyard {
 
         return LanyardUser.fromJson(jsonBody["data"]);
       }
-      case 404: {
-        throw Exception(jsonBody["error"]["message"]);
-      }
       default: {
         throw Exception(jsonBody["error"]["message"] ?? "Unknown Error");
       }
