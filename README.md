@@ -1,3 +1,6 @@
+[![pub](https://img.shields.io/pub/v/landart.svg)](https://pub.dev/packages/landart)
+[![documentation](https://img.shields.io/badge/Documentation-landart-blue.svg)](https://pub.dev/documentation/landart/latest/)
+
 An API wrapper for [Lanyard](https://github.com/Phineas/lanyard) written in Dart. 
 
 ## Features
@@ -8,7 +11,8 @@ An API wrapper for [Lanyard](https://github.com/Phineas/lanyard) written in Dart
 
 ## Getting started
 
-Make sure your target user already joined Lanyard's Discord server.
+Make sure your target user already joined Lanyard's Discord server.  
+Check out [Phineas/lanyard](https://github.com/Phineas/lanyard) for more information.
 
 ## Usage
 
