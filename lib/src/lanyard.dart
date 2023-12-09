@@ -49,15 +49,15 @@ abstract class Lanyard {
   }
 
   /// Handles basic socket functions like decompression, decoding and heartbeats.
-  static Future<(WebSocketChannel, Stream<LanyardSocketEvent>)> _handleSocket() async {
+  static Future<(WebSocketChannel, Stream<_LanyardSocketEvent>)> _handleSocket() async {
     Uri uri = Uri.parse("wss://${Config.apiPath}/socket?compression=zlib_json");
     WebSocketChannel socketClient = WebSocketChannel.connect(uri);
     Stream<dynamic> socketStream = socketClient.stream.asBroadcastStream();
 
-    Stream<LanyardSocketEvent> eventStream = socketStream
+    Stream<_LanyardSocketEvent> eventStream = socketStream
       .map((r) => _utf8Decoder.convert(_zlibDecoder.decodeBytes(r))) // Decompress zlib data
       .map((s) => jsonDecode(s)) // Decode to JSON
-      .map(LanyardSocketEvent.fromJson); // Parse JSON data into `LanyardSocketEvent`
+      .map(_LanyardSocketEvent.fromJson); // Parse JSON data into `LanyardSocketEvent`
 
     int heartbeatInterval = (
       await eventStream.firstWhere((e) => e.opCode == 1)
@@ -74,7 +74,7 @@ abstract class Lanyard {
         
         // Send heartbeat event
         socketClient.sink.add(
-          LanyardSocketEvent(
+          _LanyardSocketEvent(
             opCode: 3
           ).toJson()
         );
@@ -89,7 +89,7 @@ abstract class Lanyard {
     var (socketClient, eventStream) = await _handleSocket();
 
     socketClient.sink.add(
-      LanyardSocketEvent(
+      _LanyardSocketEvent(
         opCode: 2,
         data: {
           "subscribe_to_id": userId
@@ -107,7 +107,7 @@ abstract class Lanyard {
     var (socketClient, eventStream) = await _handleSocket();
 
     socketClient.sink.add(
-      LanyardSocketEvent(
+      _LanyardSocketEvent(
         opCode: 2,
         data: {
           "subscribe_to_ids": userIdList
@@ -126,7 +126,7 @@ abstract class Lanyard {
     var (socketClient, eventStream) = await _handleSocket();
 
     socketClient.sink.add(
-      LanyardSocketEvent(
+      _LanyardSocketEvent(
         opCode: 2,
         data: {
           "subscribe_to_all": true
@@ -138,5 +138,37 @@ abstract class Lanyard {
       .where((e) => e.opCode == 0)
       .skipWhile((e) => e.type == "INIT_STATE") // Skip `INIT_STATE` event, takes too long to decode
       .map((e) => LanyardUser.fromJson(e.data));
+  }
+}
+
+class _LanyardSocketEvent {
+  final int opCode;
+  final dynamic data;
+  final String? type;
+
+  _LanyardSocketEvent({
+    required this.opCode,
+    this.data,
+    this.type
+  });
+
+  /// Parse JSON data into [_LanyardSocketEvent].
+  static _LanyardSocketEvent fromJson(dynamic json) {
+    return _LanyardSocketEvent(
+      opCode: json["op"],
+      data: json["d"],
+      type: json["t"]
+    );
+  }
+
+  /// Convert [_LanyardSocketEvent] to JSON data.
+  String toJson() {
+    return jsonEncode(
+      {
+        "op": opCode,
+        "d": data,
+        "t": type
+      }
+    );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:landart/src/utils.dart';
 
 
@@ -407,37 +405,5 @@ class Timestamp implements ToObject {
   @override
   String toString() {
     return ParseUtils.jsonEncoder.convert(toObject());
-  }
-}
-
-class LanyardSocketEvent {
-  final int opCode;
-  final dynamic data;
-  final String? type;
-
-  LanyardSocketEvent({
-    required this.opCode,
-    this.data,
-    this.type
-  });
-
-  /// Parse JSON data into [LanyardSocketEvent].
-  static LanyardSocketEvent fromJson(dynamic json) {
-    return LanyardSocketEvent(
-      opCode: json["op"],
-      data: json["d"],
-      type: json["t"]
-    );
-  }
-
-  /// Convert [LanyardSocketEvent] to JSON data.
-  String toJson() {
-    return jsonEncode(
-      {
-        "op": opCode,
-        "d": data,
-        "t": type
-      }
-    );
   }
 }
