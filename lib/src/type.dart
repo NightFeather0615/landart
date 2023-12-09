@@ -64,8 +64,11 @@ class LanyardUser implements ToObject {
 }
 
 class ActiveOnDiscord implements ToObject {
+  /// Whether the user is active on web client.
   final bool web;
+  /// Whether the user is active on desktop client.
   final bool desktop;
+  /// Whether the user is active on mobile client.
   final bool mobile;
 
   ActiveOnDiscord({
@@ -181,7 +184,10 @@ class ActivityPartyData implements ToObject {
   final String? id;
   final List<int>? size;
 
-  ActivityPartyData({required this.id, required this.size});
+  ActivityPartyData({
+    required this.id,
+    required this.size
+  });
 
   /// Parse JSON data into [ActivityPartyData].
   static ActivityPartyData? fromJson(dynamic data) {
