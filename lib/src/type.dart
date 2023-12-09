@@ -1,12 +1,12 @@
 import 'package:landart/src/utils.dart';
 
 
-abstract interface class ToObject {
+abstract interface class _ToObject {
   /// Convert class to [Object].
   Object toObject();
 }
 
-class LanyardUser implements ToObject {
+class LanyardUser implements _ToObject {
   final Map<String, String> keyValue;
   final SpotifyData? spotify;
   final DiscordUserData discordUser;
@@ -61,7 +61,7 @@ class LanyardUser implements ToObject {
   }
 }
 
-class ActiveOnDiscord implements ToObject {
+class ActiveOnDiscord implements _ToObject {
   /// Whether the user is active on web client.
   final bool web;
   /// Whether the user is active on desktop client.
@@ -90,7 +90,7 @@ class ActiveOnDiscord implements ToObject {
   }
 }
 
-class ActivityData implements ToObject {
+class ActivityData implements _ToObject {
   final String id;
   final String name;
   final int type;
@@ -178,7 +178,7 @@ class ActivityData implements ToObject {
   }
 }
 
-class ActivityPartyData implements ToObject {
+class ActivityPartyData implements _ToObject {
   final String? id;
   final List<int>? size;
 
@@ -213,7 +213,7 @@ class ActivityPartyData implements ToObject {
   }
 }
 
-class ActivityEmojiData implements ToObject {
+class ActivityEmojiData implements _ToObject {
   final String name;
 
   ActivityEmojiData({required this.name});
@@ -237,7 +237,7 @@ class ActivityEmojiData implements ToObject {
   }
 }
 
-class DiscordUserData implements ToObject {
+class DiscordUserData implements _ToObject {
   final String id;
   final String username;
   final String? avatar;
@@ -296,7 +296,7 @@ class DiscordUserData implements ToObject {
   }
 }
 
-class AvatarDecorationData implements ToObject {
+class AvatarDecorationData implements _ToObject {
   final String asset;
   final int skuId;
 
@@ -328,7 +328,7 @@ class AvatarDecorationData implements ToObject {
   }
 }
 
-class SpotifyData implements ToObject {
+class SpotifyData implements _ToObject {
   final String? trackId;
   final Timestamp? timestamps;
   final String album;
@@ -376,7 +376,7 @@ class SpotifyData implements ToObject {
   }
 }
 
-class Timestamp implements ToObject {
+class Timestamp implements _ToObject {
   final int? start;
   final int? end;
 
