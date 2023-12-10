@@ -103,7 +103,7 @@ abstract class Lanyard {
   }
 
   /// Subscribing to multiple user presences.
-  static Stream<Map<String, LanyardUser>> subscribeMultiple(List<String> userIdList) {
+  static Stream<LanyardUser> subscribeMultiple(List<String> userIdList) {
     var (socketClient, eventStream) = _handleSocket();
 
     socketClient.sink.add(
@@ -117,8 +117,8 @@ abstract class Lanyard {
 
     return eventStream
       .where((e) => e.opCode == 0)
-      .map((e) => e.data as Map<String, dynamic>)
-      .map((e) => e.map((k, v) => MapEntry(k, LanyardUser.fromJson(v))));
+      .skipWhile((e) => e.type == "INIT_STATE") // Skip `INIT_STATE` event
+      .map((e) => LanyardUser.fromJson(e.data));
   }
 
   /// Subscribing to every user presence.
@@ -136,7 +136,7 @@ abstract class Lanyard {
 
     return eventStream
       .where((e) => e.opCode == 0)
-      .skipWhile((e) => e.type == "INIT_STATE") // Skip `INIT_STATE` event, takes too long to decode
+      .skipWhile((e) => e.type == "INIT_STATE") // Skip `INIT_STATE` event
       .map((e) => LanyardUser.fromJson(e.data));
   }
 }

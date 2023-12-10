@@ -6,13 +6,13 @@ void main() async {
     ["someUserId1", "someUserId2", "someUserId3"]
   )).map((e) => e.discordUser.id).toList();
   
-  (await Lanyard.subscribe(user.discordUser.id)).listen((user) {
+  Lanyard.subscribe(user.discordUser.id).listen((user) {
     user.toObject();
   });
-  (await Lanyard.subscribeMultiple(users)).listen((user) {
-    user.values;
+  Lanyard.subscribeMultiple(users).listen((user) {
+    user.toObject();
   });
-  (await Lanyard.subscribeAll()).listen((user) {
+  Lanyard.subscribeAll().listen((user) {
     user.toObject();
   });
 

@@ -48,7 +48,7 @@ void main() async {
   });
 
   test("Subscribe Multiple User", () async {
-    Stream<Map<String, LanyardUser>> event = Lanyard.subscribeMultiple(
+    Stream<LanyardUser> event = Lanyard.subscribeMultiple(
       ["94490510688792576", "156114103033790464", "819287687121993768"]
     );
 
@@ -56,7 +56,10 @@ void main() async {
 
     event.listen(
       (_) => {},
-      onError: (_) => hasError = true,
+      onError: (e) {
+        print(e);
+        hasError = true;
+      },
       cancelOnError: true
     );
 

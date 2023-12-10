@@ -332,7 +332,7 @@ class SpotifyData implements _ToObject {
   final String? trackId;
   final Timestamp? timestamps;
   final String album;
-  final String albumArtUrl;
+  final String? albumArtUrl;
   final String artist;
   final String song;
 
