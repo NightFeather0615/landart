@@ -49,7 +49,7 @@ abstract class Lanyard {
   }
 
   /// Handles basic socket functions like decompression, decoding and heartbeats.
-  static Future<(WebSocketChannel, Stream<_LanyardSocketEvent>)> _handleSocket() async {
+  static (WebSocketChannel, Stream<_LanyardSocketEvent>) _handleSocket() {
     Uri uri = Uri.parse("wss://${Config.apiPath}/socket?compression=zlib_json");
     WebSocketChannel socketClient = WebSocketChannel.connect(uri);
     Stream<dynamic> socketStream = socketClient.stream.asBroadcastStream();
@@ -59,34 +59,34 @@ abstract class Lanyard {
       .map((s) => jsonDecode(s)) // Decode to JSON
       .map(_LanyardSocketEvent.fromJson); // Parse JSON data into `LanyardSocketEvent`
 
-    int heartbeatInterval = (
-      await eventStream.firstWhere((e) => e.opCode == 1)
-    ).data["heartbeat_interval"]; // Get heartbeat interval from event
-
-    Timer.periodic(
-      Duration(milliseconds: heartbeatInterval),
-      (t) {
-        // Cancel heartbeat timer if connection is closed
-        if (socketClient.closeCode != null) {
-          t.cancel();
-          return;
-        }
-        
-        // Send heartbeat event
-        socketClient.sink.add(
-          _LanyardSocketEvent(
-            opCode: 3
-          ).toJson()
+    eventStream
+      .firstWhere((e) => e.opCode == 1)
+      .then((e) {
+        Timer.periodic(
+          Duration(milliseconds: e.data["heartbeat_interval"]),
+          (t) {
+            // Cancel heartbeat timer if connection is closed
+            if (socketClient.closeCode != null) {
+              t.cancel();
+              return;
+            }
+            
+            // Send heartbeat event
+            socketClient.sink.add(
+              _LanyardSocketEvent(
+                opCode: 3
+              ).toJson()
+            );
+          }
         );
-      }
-    );
+      });
 
     return (socketClient, eventStream);
   }
 
   /// Subscribing to a single user presence.
-  static Future<Stream<LanyardUser>> subscribe(String userId) async {
-    var (socketClient, eventStream) = await _handleSocket();
+  static Stream<LanyardUser> subscribe(String userId) {
+    var (socketClient, eventStream) = _handleSocket();
 
     socketClient.sink.add(
       _LanyardSocketEvent(
@@ -103,8 +103,8 @@ abstract class Lanyard {
   }
 
   /// Subscribing to multiple user presences.
-  static Future<Stream<Map<String, LanyardUser>>> subscribeMultiple(List<String> userIdList) async {
-    var (socketClient, eventStream) = await _handleSocket();
+  static Stream<Map<String, LanyardUser>> subscribeMultiple(List<String> userIdList) {
+    var (socketClient, eventStream) = _handleSocket();
 
     socketClient.sink.add(
       _LanyardSocketEvent(
@@ -122,8 +122,8 @@ abstract class Lanyard {
   }
 
   /// Subscribing to every user presence.
-  static Future<Stream<LanyardUser>> subscribeAll() async {
-    var (socketClient, eventStream) = await _handleSocket();
+  static Stream<LanyardUser> subscribeAll() {
+    var (socketClient, eventStream) = _handleSocket();
 
     socketClient.sink.add(
       _LanyardSocketEvent(
