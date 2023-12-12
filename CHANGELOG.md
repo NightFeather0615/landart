@@ -1,6 +1,10 @@
+## 1.3.1
+
+- Fix misimplements
+
 ## 1.3.0
 
-- Implement `Equatable` from `equatable` for types for value based equality
+- Extends `Equatable` from `equatable` for types for value based equality
 
 ## 1.2.0
 

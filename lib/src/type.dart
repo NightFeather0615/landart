@@ -7,7 +7,7 @@ abstract interface class _ToObject {
   Object toObject();
 }
 
-class LanyardUser implements _ToObject, Equatable  {
+class LanyardUser extends Equatable implements _ToObject  {
   final Map<String, String> keyValue;
   final SpotifyData? spotify;
   final DiscordUserData discordUser;
@@ -54,8 +54,6 @@ class LanyardUser implements _ToObject, Equatable  {
     listeningToSpotify
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -76,7 +74,7 @@ class LanyardUser implements _ToObject, Equatable  {
   }
 }
 
-class ActiveOnDiscord implements _ToObject, Equatable {
+class ActiveOnDiscord extends Equatable implements _ToObject {
   /// Whether the user is active on web client.
   final bool web;
   /// Whether the user is active on desktop client.
@@ -97,8 +95,6 @@ class ActiveOnDiscord implements _ToObject, Equatable {
     mobile
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -115,7 +111,7 @@ class ActiveOnDiscord implements _ToObject, Equatable {
   }
 }
 
-class ActivityData implements _ToObject, Equatable {
+class ActivityData extends Equatable implements _ToObject {
   final String id;
   final String name;
   final int type;
@@ -196,8 +192,6 @@ class ActivityData implements _ToObject, Equatable {
     buttons
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject({int indentDepth = 0}) {
@@ -225,7 +219,7 @@ class ActivityData implements _ToObject, Equatable {
   }
 }
 
-class ActivityPartyData implements _ToObject, Equatable {
+class ActivityPartyData extends Equatable implements _ToObject {
   final String? id;
   final List<int>? size;
 
@@ -252,8 +246,6 @@ class ActivityPartyData implements _ToObject, Equatable {
     size
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -269,7 +261,7 @@ class ActivityPartyData implements _ToObject, Equatable {
   }
 }
 
-class ActivityEmojiData implements _ToObject, Equatable {
+class ActivityEmojiData extends Equatable implements _ToObject {
   final String name;
 
   ActivityEmojiData({required this.name});
@@ -285,8 +277,6 @@ class ActivityEmojiData implements _ToObject, Equatable {
     name
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -301,7 +291,7 @@ class ActivityEmojiData implements _ToObject, Equatable {
   }
 }
 
-class DiscordUserData implements _ToObject, Equatable {
+class DiscordUserData extends Equatable implements _ToObject {
   final String id;
   final String username;
   final String? avatar;
@@ -352,8 +342,6 @@ class DiscordUserData implements _ToObject, Equatable {
     publicFlags
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -376,7 +364,7 @@ class DiscordUserData implements _ToObject, Equatable {
   }
 }
 
-class AvatarDecorationData implements _ToObject, Equatable {
+class AvatarDecorationData extends Equatable implements _ToObject {
   final String asset;
   final int skuId;
 
@@ -400,8 +388,6 @@ class AvatarDecorationData implements _ToObject, Equatable {
     skuId
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -417,7 +403,7 @@ class AvatarDecorationData implements _ToObject, Equatable {
   }
 }
 
-class SpotifyData implements _ToObject, Equatable {
+class SpotifyData extends Equatable implements _ToObject {
   final String? trackId;
   final Timestamp? timestamps;
   final String album;
@@ -457,8 +443,6 @@ class SpotifyData implements _ToObject, Equatable {
     song
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -478,7 +462,7 @@ class SpotifyData implements _ToObject, Equatable {
   }
 }
 
-class Timestamp implements _ToObject, Equatable {
+class Timestamp extends Equatable implements _ToObject {
   final int? start;
   final int? end;
 
@@ -502,8 +486,6 @@ class Timestamp implements _ToObject, Equatable {
     end
   ];
 
-  @override
-  bool? get stringify => false;
 
   @override
   Object toObject() {
