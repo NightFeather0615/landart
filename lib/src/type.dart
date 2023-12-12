@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:landart/src/utils.dart';
 
 
@@ -6,7 +7,7 @@ abstract interface class _ToObject {
   Object toObject();
 }
 
-class LanyardUser implements _ToObject {
+class LanyardUser implements _ToObject, Equatable  {
   final Map<String, String> keyValue;
   final SpotifyData? spotify;
   final DiscordUserData discordUser;
@@ -43,6 +44,20 @@ class LanyardUser implements _ToObject {
   }
 
   @override
+  List<Object?> get props => [
+    keyValue,
+    spotify,
+    discordUser,
+    activities,
+    discordStatus,
+    activeOnDiscord,
+    listeningToSpotify
+  ];
+
+  @override
+  bool? get stringify => false;
+
+  @override
   Object toObject() {
     return {
       "keyValue": keyValue,
@@ -61,7 +76,7 @@ class LanyardUser implements _ToObject {
   }
 }
 
-class ActiveOnDiscord implements _ToObject {
+class ActiveOnDiscord implements _ToObject, Equatable {
   /// Whether the user is active on web client.
   final bool web;
   /// Whether the user is active on desktop client.
@@ -74,6 +89,16 @@ class ActiveOnDiscord implements _ToObject {
     required this.desktop,
     required this.mobile
   });
+
+  @override
+  List<Object?> get props => [
+    web,
+    desktop,
+    mobile
+  ];
+
+  @override
+  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -90,7 +115,7 @@ class ActiveOnDiscord implements _ToObject {
   }
 }
 
-class ActivityData implements _ToObject {
+class ActivityData implements _ToObject, Equatable {
   final String id;
   final String name;
   final int type;
@@ -153,6 +178,28 @@ class ActivityData implements _ToObject {
   }
 
   @override
+  List<Object?> get props => [
+    id,
+    name,
+    type,
+    flags,
+    state,
+    sessionId,
+    applicationId,
+    details,
+    timestamps,
+    assets,
+    syncId,
+    createdAt,
+    party,
+    emoji,
+    buttons
+  ];
+
+  @override
+  bool? get stringify => false;
+
+  @override
   Object toObject({int indentDepth = 0}) {
     return {
       "name": name,
@@ -178,7 +225,7 @@ class ActivityData implements _ToObject {
   }
 }
 
-class ActivityPartyData implements _ToObject {
+class ActivityPartyData implements _ToObject, Equatable {
   final String? id;
   final List<int>? size;
 
@@ -200,6 +247,15 @@ class ActivityPartyData implements _ToObject {
   }
 
   @override
+  List<Object?> get props => [
+    id,
+    size
+  ];
+
+  @override
+  bool? get stringify => false;
+
+  @override
   Object toObject() {
     return {
       "id": id,
@@ -213,7 +269,7 @@ class ActivityPartyData implements _ToObject {
   }
 }
 
-class ActivityEmojiData implements _ToObject {
+class ActivityEmojiData implements _ToObject, Equatable {
   final String name;
 
   ActivityEmojiData({required this.name});
@@ -223,6 +279,14 @@ class ActivityEmojiData implements _ToObject {
     if (data == null) return null;
     return ActivityEmojiData(name: data["name"]);
   }
+
+  @override
+  List<Object?> get props => [
+    name
+  ];
+
+  @override
+  bool? get stringify => false;
 
   @override
   Object toObject() {
@@ -237,7 +301,7 @@ class ActivityEmojiData implements _ToObject {
   }
 }
 
-class DiscordUserData implements _ToObject {
+class DiscordUserData implements _ToObject, Equatable {
   final String id;
   final String username;
   final String? avatar;
@@ -276,6 +340,22 @@ class DiscordUserData implements _ToObject {
   }
 
   @override
+  List<Object?> get props => [
+    id,
+    username, 
+    avatar,
+    discriminator,
+    bot,
+    globalName,
+    avatarDecoration,
+    displayName,
+    publicFlags
+  ];
+
+  @override
+  bool? get stringify => false;
+
+  @override
   Object toObject() {
     return {
       "id": id,
@@ -296,7 +376,7 @@ class DiscordUserData implements _ToObject {
   }
 }
 
-class AvatarDecorationData implements _ToObject {
+class AvatarDecorationData implements _ToObject, Equatable {
   final String asset;
   final int skuId;
 
@@ -315,6 +395,15 @@ class AvatarDecorationData implements _ToObject {
   }
 
   @override
+  List<Object?> get props => [
+    asset,
+    skuId
+  ];
+
+  @override
+  bool? get stringify => false;
+
+  @override
   Object toObject() {
     return {
       "asset": asset,
@@ -328,7 +417,7 @@ class AvatarDecorationData implements _ToObject {
   }
 }
 
-class SpotifyData implements _ToObject {
+class SpotifyData implements _ToObject, Equatable {
   final String? trackId;
   final Timestamp? timestamps;
   final String album;
@@ -359,6 +448,19 @@ class SpotifyData implements _ToObject {
   }
 
   @override
+  List<Object?> get props => [
+    trackId,
+    timestamps,
+    album,
+    albumArtUrl,
+    artist,
+    song
+  ];
+
+  @override
+  bool? get stringify => false;
+
+  @override
   Object toObject() {
     return {
       "trackId": trackId,
@@ -376,7 +478,7 @@ class SpotifyData implements _ToObject {
   }
 }
 
-class Timestamp implements _ToObject {
+class Timestamp implements _ToObject, Equatable {
   final int? start;
   final int? end;
 
@@ -393,6 +495,15 @@ class Timestamp implements _ToObject {
       end: data["end"]
     );
   }
+
+  @override
+  List<Object?> get props => [
+    start,
+    end
+  ];
+
+  @override
+  bool? get stringify => false;
 
   @override
   Object toObject() {

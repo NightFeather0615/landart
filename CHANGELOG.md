@@ -1,3 +1,7 @@
+## 1.3.0
+
+- Implement `Equatable` from `equatable` for types for value based equality
+
 ## 1.2.0
 
 - Removed unnecessary `Future` for presence subscribing
