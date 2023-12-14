@@ -13,7 +13,9 @@ class LanyardUser extends Equatable implements _ToObject  {
   final DiscordUserData discordUser;
   final List<ActivityData> activities;
   final String discordStatus;
-  final ActiveOnDiscord activeOnDiscord;
+  final bool activeOnDiscordWeb;
+  final bool activeOnDiscordDesktop;
+  final bool activeOnDiscordMobile;
   final bool listeningToSpotify;
 
   LanyardUser({
@@ -22,7 +24,9 @@ class LanyardUser extends Equatable implements _ToObject  {
     required this.discordUser,
     required this.activities,
     required this.discordStatus,
-    required this.activeOnDiscord,
+    required this.activeOnDiscordWeb,
+    required this.activeOnDiscordDesktop,
+    required this.activeOnDiscordMobile,
     required this.listeningToSpotify
   });
 
@@ -34,11 +38,9 @@ class LanyardUser extends Equatable implements _ToObject  {
       discordUser: DiscordUserData.fromJson(data["discord_user"]),
       activities: (data["activities"] as List<dynamic>).map(ActivityData.fromJson).toList(),
       discordStatus: data["discord_status"],
-      activeOnDiscord: ActiveOnDiscord(
-        web: data["active_on_discord_web"],
-        desktop: data["active_on_discord_desktop"], 
-        mobile: data["active_on_discord_mobile"]
-      ),
+      activeOnDiscordWeb: data["active_on_discord_web"],
+      activeOnDiscordDesktop: data["active_on_discord_desktop"],
+      activeOnDiscordMobile: data["active_on_discord_mobile"],
       listeningToSpotify: data["listening_to_spotify"]
     );
   }
@@ -50,7 +52,9 @@ class LanyardUser extends Equatable implements _ToObject  {
     discordUser,
     activities,
     discordStatus,
-    activeOnDiscord,
+    activeOnDiscordWeb,
+    activeOnDiscordDesktop,
+    activeOnDiscordMobile,
     listeningToSpotify
   ];
 
@@ -58,50 +62,15 @@ class LanyardUser extends Equatable implements _ToObject  {
   @override
   Object toObject() {
     return {
-      "keyValue": keyValue,
+      "kv": keyValue,
       "spotify": spotify?.toObject(),
-      "discordUser": discordUser.toObject(),
+      "discord_user": discordUser.toObject(),
       "activities": activities.map((e) => e.toObject()).toList(),
-      "discordStatus": discordStatus,
-      "activeOnDiscord": activeOnDiscord.toObject(),
-      "listeningToSpotify": listeningToSpotify
-    };
-  }
-
-  @override
-  String toString() {
-    return ParseUtils.jsonEncoder.convert(toObject());
-  }
-}
-
-class ActiveOnDiscord extends Equatable implements _ToObject {
-  /// Whether the user is active on web client.
-  final bool web;
-  /// Whether the user is active on desktop client.
-  final bool desktop;
-  /// Whether the user is active on mobile client.
-  final bool mobile;
-
-  ActiveOnDiscord({
-    required this.web,
-    required this.desktop,
-    required this.mobile
-  });
-
-  @override
-  List<Object?> get props => [
-    web,
-    desktop,
-    mobile
-  ];
-
-
-  @override
-  Object toObject() {
-    return {
-      "web": web,
-      "desktop": desktop,
-      "mobile": mobile
+      "discord_status": discordStatus,
+      "active_on_discord_web": activeOnDiscordWeb,
+      "active_on_discord_desktop": activeOnDiscordDesktop,
+      "active_on_discord_mobile": activeOnDiscordMobile,
+      "listening_to_spotify": listeningToSpotify
     };
   }
 
@@ -196,17 +165,18 @@ class ActivityData extends Equatable implements _ToObject {
   @override
   Object toObject({int indentDepth = 0}) {
     return {
+      "id": id,
       "name": name,
       "type": type,
       "flags": flags,
       "state": state,
-      "sessionId": sessionId,
-      "applicationId": applicationId,
+      "session_id": sessionId,
+      "applicaiton_id": applicationId,
       "details": details,
       "timestamps": timestamps?.toObject(),
       "assets": assets,
-      "syncId": syncId,
-      "createdAt": createdAt,
+      "sync_id": syncId,
+      "created_at": createdAt,
       "party": party?.toObject(),
       "emoji": emoji?.toObject(),
       "buttons": buttons
@@ -351,10 +321,10 @@ class DiscordUserData extends Equatable implements _ToObject {
       "avatar": avatar,
       "discriminator": discriminator,
       "bot": bot,
-      "globalName": globalName,
-      "avatarDecoration": avatarDecoration?.toObject(),
-      "displayName": displayName,
-      "publicFlags": publicFlags
+      "global_name": globalName,
+      "avatar_decoration_data": avatarDecoration?.toObject(),
+      "display_name": displayName,
+      "public_flags": publicFlags
     };
   }
 
@@ -393,7 +363,7 @@ class AvatarDecorationData extends Equatable implements _ToObject {
   Object toObject() {
     return {
       "asset": asset,
-      "skuId": skuId
+      "sku_id": skuId
     };
   }
 
@@ -447,10 +417,10 @@ class SpotifyData extends Equatable implements _ToObject {
   @override
   Object toObject() {
     return {
-      "trackId": trackId,
+      "track_id": trackId,
       "timestamps": timestamps?.toObject(),
       "album": trackId,
-      "albumArtUrl": albumArtUrl,
+      "album_art_url": albumArtUrl,
       "artist": artist,
       "song": song
     };
